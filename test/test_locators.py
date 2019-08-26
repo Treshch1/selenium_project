@@ -1,7 +1,5 @@
-import time
-
 def test_titles_in_admin(app):
-    app.session.login_admin("admin", "admin")
+    app.session.login_admin()
     all_tabs = app.wd.find_elements_by_id("app-")
     for tab_index in range(len(all_tabs)):
         needed_tab = app.wd.find_elements_by_id("app-")[tab_index]
@@ -16,6 +14,7 @@ def test_titles_in_admin(app):
         else:
             title = app.wd.find_element_by_tag_name("h1")
             assert title.is_displayed()
+
 
 def test_lables_on_landing_page(app):
     app.open_main_site()
