@@ -1,7 +1,6 @@
 import time
 
-
-def test_example(app):
+def test_titles_in_admin(app):
     app.session.login_admin("admin", "admin")
     all_tabs = app.wd.find_elements_by_id("app-")
     for tab_index in range(len(all_tabs)):
@@ -13,11 +12,14 @@ def test_example(app):
                 needed_sub_tab = app.wd.find_elements_by_xpath("//li[@id='app-']//li")[sub_tab_index]
                 needed_sub_tab.click()
                 title = app.wd.find_element_by_tag_name("h1")
-                print(f"assert {title.text}")
                 assert title.is_displayed()
         else:
             title = app.wd.find_element_by_tag_name("h1")
-            print(f"assert {title.text}")
             assert title.is_displayed()
 
-    time.sleep(2)
+def test_lables_on_landing_page(app):
+    app.open_main_site()
+    all_products = app.wd.find_elements_by_css_selector("li.product")
+    for product in all_products:
+        stickers = product.find_elements_by_css_selector("div.sticker")
+        assert len(stickers) == 1
