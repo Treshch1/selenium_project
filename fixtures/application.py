@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.support.color import Color
 from fixtures.session import SessionHelper
 from fixtures.registration import RegistrationHelper
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os.path
 
 
@@ -106,3 +108,36 @@ class Application:
         input_image_element = wd.find_element_by_name("new_images[]")
         file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "inner_yard.jpg")
         input_image_element.send_keys(file_path)
+
+    def get_cart_quntity(self):
+        wd = self.wd
+        return int(wd.find_element_by_css_selector('span.quantity').text)
+
+    def add_item_to_the_cart(self):
+        wd = self.wd
+        wd.find_element_by_xpath("//div[@title='New']").click()
+        wd.find_element_by_name("add_cart_product").click()
+        WebDriverWait(wd, 3).until(EC.alert_is_present())
+        alert = wd.switch_to.alert
+        alert.accept()
+        self.open_main_site()
+
+    def open_cart(self):
+        wd = self.wd
+        wd.find_element_by_xpath("//a[.='Checkout »']").click()
+
+    def is_image_displayed(self):
+        wd = self.wd
+        return wd.find_elements_by_css_selector("td.content img")
+
+    def remove_item_from_cart(self):
+        wd = self.wd
+        wd.find_element_by_name("remove_cart_item").click()
+
+    def get_table_element(self):
+        wd = self.wd
+        return wd.find_element_by_css_selector("table.dataTable")
+
+    def wait_until_element_become_changed(self, element):
+        wd = self.wd
+        WebDriverWait(wd, 10).until(EC.staleness_of(element))
