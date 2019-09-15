@@ -22,3 +22,9 @@ def test_registration(app):
     app.registration.fill_login_form(email, password)
     app.registration.submit_login_form()
     app.registration.logout()
+
+
+def test_image_uploading(app):
+    app.session.login_admin()
+    app.open_add_new_catalog_page()
+    app.upload_image()

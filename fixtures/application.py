@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.support.color import Color
 from fixtures.session import SessionHelper
 from fixtures.registration import RegistrationHelper
+import os.path
 
 
 class Application:
@@ -95,3 +96,13 @@ class Application:
     def get_green_value(self, color):
         return Color.from_string(color).green
 
+    def open_add_new_catalog_page(self):
+        wd = self.wd
+        wd.find_element_by_xpath("//span[@class='name' and .='Catalog']").click()
+        wd.find_element_by_xpath("//a[@class='button' and .=' Add New Product']").click()
+
+    def upload_image(self):
+        wd = self.wd
+        input_image_element = wd.find_element_by_name("new_images[]")
+        file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "inner_yard.jpg")
+        input_image_element.send_keys(file_path)
