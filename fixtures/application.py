@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.color import Color
 from fixtures.session import SessionHelper
+from fixtures.registration import RegistrationHelper
 
 
 class Application:
@@ -8,6 +9,7 @@ class Application:
     def __init__(self):
         self.wd = webdriver.Chrome()
         self.session = SessionHelper(self)
+        self.registration = RegistrationHelper(self)
 
     def destroy(self):
         self.wd.quit()
