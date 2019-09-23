@@ -141,3 +141,26 @@ class Application:
     def wait_until_element_become_changed(self, element):
         wd = self.wd
         WebDriverWait(wd, 10).until(EC.staleness_of(element))
+
+    def open_add_new_country(self):
+        wd = self.wd
+        wd.find_element_by_xpath("//a[.= ' Add New Country']").click()
+
+    def get_all_external_links(self):
+        wd = self.wd
+        return wd.find_elements_by_css_selector("i.fa.fa-external-link")
+
+    def wait_new_window_and_close(self, element):
+        wd = self.wd
+        current_handle = wd.current_window_handle
+        # yield
+        element.click()
+        WebDriverWait(wd, 10).until(
+            lambda wd: 1 != len(wd.window_handles))
+        for i in wd.window_handles:
+            if i != current_handle:
+                new_handle = i
+                break
+        wd.switch_to.window(new_handle)
+        wd.close()
+        wd.switch_to.window(current_handle)
